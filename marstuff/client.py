@@ -1,12 +1,12 @@
-import typing
-from datetime import date, datetime
+from datetime import date
+from typing import Union
 
 import httpx
 
+from marstuff.objects.camera import Camera, CAMERAS
 from marstuff.objects.photo import Photo
 from marstuff.objects.rover import Rover, ROVERS
-
-from marstuff.utils import convert, get_rover_name, List, Union
+from marstuff.utils import convert, get_name, List
 
 
 class Client:
@@ -16,10 +16,23 @@ class Client:
 
     def get(self, endpoint, **params):
         params['api_key'] = self.api_key
-        return httpx.get(self.base_url + endpoint, params=params).json()
+        return httpx.get(self.base_url + endpoint, params = params).json()
 
-    def get_rover_photos_on_sol(self, rover: typing.Union[Rover, ROVERS, str], sol: int):
-        rover_name = get_rover_name(rover)
-        sol = convert(sol, int)
-        photos = self.get(f"rovers/{rover_name}/photos", sol=sol)
+    def get_photos(self, rover: Union[Rover, ROVERS, str], sol: int = None, earth_date: str = None,
+                            page_number: int = None, camera: Union[Camera, CAMERAS, str] = None):
+        rover_name = get_name(rover, Rover, ROVERS)
+        params = {}
+        if sol is not None:
+            sol = convert(sol, int)
+            params['sol'] = sol
+        elif earth_date is not None:
+            earth_date = convert(earth_date, date)
+            params['earth_date'] = earth_date.isoformat()
+        if page_number is not None:
+            page_number = convert(page_number, int)
+            params['page'] = page_number
+        if camera is not None:
+            camera = get_name(camera, Camera, CAMERAS)
+            params['camera'] = camera
+        photos = self.get(f"rovers/{rover_name}/photos", **params)
         return convert(photos['photos'], List[Photo])

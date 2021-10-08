@@ -1,5 +1,6 @@
 import contextlib
 import copy
+import datetime
 import inspect
 import typing
 from enum import Enum
@@ -11,6 +12,8 @@ T = TypeVar("T")
 def convert(var, type_: Type[T]) -> T:
     if isinstance(type_, type) and isinstance(var, type_):
         return var
+    if isinstance(type_, datetime.date) and isinstance(var, str):
+        return type_.fromisoformat(var)
     with contextlib.suppress(Exception):
         return type_(var)
     return var
@@ -85,16 +88,13 @@ def Extras(extras):
     return extras
 
 
-from marstuff.objects.rover import Rover, ROVERS
-
-
-def get_rover_name(rover: typing.Union[Rover, ROVERS, str]):
-    if isinstance(rover, Rover):
-        rover_name = rover.name
-    elif isinstance(rover, ROVERS):
-        rover_name = rover.value
-    elif isinstance(rover, str) and rover in ROVERS:
-        rover_name = rover
+def get_name(object, object_class, object_enum):
+    if isinstance(object, object_class):
+        object_name = object.name
+    elif isinstance(object, object_enum):
+        object_name = object.value
+    elif isinstance(object, str) and object in object_enum:
+        object_name = object
     else:
-        raise ValueError(f"Expected a Rover, got {rover}")
-    return rover_name
+        raise ValueError(f"Expected a {object_class.__name__}, got {object}")
+    return object_name
