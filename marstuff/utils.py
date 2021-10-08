@@ -92,9 +92,12 @@ def get_name(object, object_class, object_enum):
     if isinstance(object, object_class):
         object_name = object.name
     elif isinstance(object, object_enum):
-        object_name = object.value
-    elif isinstance(object, str) and object in object_enum:
-        object_name = object
+        if isinstance(object.value, object_class):
+            object_name = object.value.name
+        else:
+            object_name = object.value
+    elif isinstance(object, str) and object.upper() in object_enum:
+        object_name = object.upper()
     else:
         raise ValueError(f"Expected a {object_class.__name__}, got {object}")
     return object_name

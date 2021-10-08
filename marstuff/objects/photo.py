@@ -1,8 +1,8 @@
 from datetime import date
 
-from marstuff.objects.camera import Camera
-from marstuff.objects.rover import Rover
 from marstuff.bases import Object
+from marstuff.objects.camera import Camera
+from marstuff.objects.manifest import Manifest
 from marstuff.utils import convert, Extras
 
 
@@ -13,5 +13,5 @@ class Photo(Object):
         self.camera = convert(camera, Camera)
         self.img_src = convert(img_src, str)
         self.earth_date = convert(earth_date, date)
-        self.rover = convert(rover, Rover)
+        self.rover = convert(rover, Manifest)
         self.extras: dict = convert(extras, Extras)
