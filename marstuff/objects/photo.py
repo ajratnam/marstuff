@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 from datetime import date
 
 from marstuff.bases import Object
-from marstuff.objects.camera import Camera
 from marstuff.objects.manifest import Manifest
 from marstuff.utils import convert, Extras
 
@@ -15,3 +16,6 @@ class Photo(Object):
         self.earth_date = convert(earth_date, date)
         self.rover = convert(rover, Manifest)
         self.extras: dict = convert(extras, Extras)
+
+
+from marstuff.objects.camera import Camera

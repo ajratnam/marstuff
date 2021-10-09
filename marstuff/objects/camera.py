@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 import random
 from enum import Enum
 from typing import Optional
 
 from marstuff.bases import Object
-from marstuff.objects.rover import CLIENT_ROVERS, Rover
 from marstuff.utils import convert, Extras
 
 
@@ -29,7 +30,7 @@ class CameraClient(BaseCamera):
     @property
     def rover(self) -> Rover:
         if CLIENT_ROVERS:
-            return random.choice(CLIENT_ROVERS.values())
+            return random.choice(CLIENT_ROVERS)
         raise ValueError('No Rovers Available!!')
 
     def get_photos(self, sol: int = None, earth_date: str = None, page_number: Optional[int] = 1):
@@ -51,28 +52,39 @@ class CameraClient(BaseCamera):
         return self.get_all_photos(None, earth_date)
 
 
-class CAMERAS(Enum):
-    EDL_RUCAM = CameraClient("EDL_RUCAM", "Rover Up-Look Camera")
-    EDL_RDCAM = CameraClient("EDL_RDCAM", "Rover Down-Look Camera")
-    EDL_DDCAM = CameraClient("EDL_DDCAM", "Descent Stage Down-Look Camera")
-    EDL_PUCAM1 = CameraClient("EDL_PUCAM1", "Parachute Up-Look Camera A")
-    EDL_PUCAM2 = CameraClient("EDL_PUCAM2", "Parachute Up-Look Camera B")
-    NAVCAM_LEFT = CameraClient("NAVCAM_LEFT", "Navigation Camera - Left")
-    NAVCAM_RIGHT = CameraClient("NAVCAM_RIGHT", "Navigation Camera - Right")
-    MCZ_RIGHT = CameraClient("MCZ_RIGHT", "Mast Camera Zoom - Right")
-    MCZ_LEFT = CameraClient("MCZ_LEFT", "Mast Camera Zoom - Left")
-    FRONT_HAZCAM_LEFT_A = CameraClient("FRONT_HAZCAM_LEFT_A", "Front Hazard Avoidance Camera - Left")
-    FRONT_HAZCAM_RIGHT_A = CameraClient("FRONT_HAZCAM_RIGHT_A", "Front Hazard Avoidance Camera - Right")
-    REAR_HAZCAM_LEFT = CameraClient("REAR_HAZCAM_LEFT", "Rear Hazard Avoidance Camera - Left")
-    REAR_HAZCAM_RIGHT = CameraClient("REAR_HAZCAM_RIGHT", "Rear Hazard Avoidance Camera - Right")
-    SKYCAM = CameraClient("SKYCAM", "MEDA Skycam")
-    SHERLOC_WATSON = CameraClient("SHERLOC_WATSON", "SHERLOC WATSON Camera")
-    FHAZ = CameraClient("FHAZ", "Front Hazard Avoidance Camera")
-    RHAZ = CameraClient("RHAZ", "Rear Hazard Avoidance Camera")
-    MAST = CameraClient("MAST", "Mast Camera")
-    CHEMCAM = CameraClient("CHEMCAM", "Chemistry and Camera Complex")
-    MAHLI = CameraClient("MAHLI", "Mars Hand Lens Imager")
-    MARDI = CameraClient("MARDI", "Mars Descent Imager")
-    NAVCAM = CameraClient("NAVCAM", "Navigation Camera")
-    PANCAM = CameraClient("PANCAM", "Panoramic Camera")
-    MINITES = CameraClient("MINITES", "Miniature Thermal Emission Spectrometer (Mini-TES)")
+def make_cameras(rover=None):
+    class BaseCameras(Enum):
+        EDL_RUCAM: CameraClient = CameraClient("EDL_RUCAM", "Rover Up-Look Camera", rover)
+        EDL_RDCAM: CameraClient = CameraClient("EDL_RDCAM", "Rover Down-Look Camera", rover)
+        EDL_DDCAM: CameraClient = CameraClient("EDL_DDCAM", "Descent Stage Down-Look Camera", rover)
+        EDL_PUCAM1: CameraClient = CameraClient("EDL_PUCAM1", "Parachute Up-Look Camera A", rover)
+        EDL_PUCAM2: CameraClient = CameraClient("EDL_PUCAM2", "Parachute Up-Look Camera B", rover)
+        NAVCAM_LEFT: CameraClient = CameraClient("NAVCAM_LEFT", "Navigation Camera - Left", rover)
+        NAVCAM_RIGHT: CameraClient = CameraClient("NAVCAM_RIGHT", "Navigation Camera - Right", rover)
+        MCZ_RIGHT: CameraClient = CameraClient("MCZ_RIGHT", "Mast Camera Zoom - Right", rover)
+        MCZ_LEFT: CameraClient = CameraClient("MCZ_LEFT", "Mast Camera Zoom - Left", rover)
+        FRONT_HAZCAM_LEFT_A: CameraClient = CameraClient("FRONT_HAZCAM_LEFT_A", "Front Hazard Avoidance Camera - Left",
+                                                         rover)
+        FRONT_HAZCAM_RIGHT_A: CameraClient = CameraClient("FRONT_HAZCAM_RIGHT_A",
+                                                          "Front Hazard Avoidance Camera - Right", rover)
+        REAR_HAZCAM_LEFT: CameraClient = CameraClient("REAR_HAZCAM_LEFT", "Rear Hazard Avoidance Camera - Left", rover)
+        REAR_HAZCAM_RIGHT: CameraClient = CameraClient("REAR_HAZCAM_RIGHT", "Rear Hazard Avoidance Camera - Right",
+                                                       rover)
+        SKYCAM: CameraClient = CameraClient("SKYCAM", "MEDA Skycam", rover)
+        SHERLOC_WATSON: CameraClient = CameraClient("SHERLOC_WATSON", "SHERLOC WATSON Camera", rover)
+        FHAZ: CameraClient = CameraClient("FHAZ", "Front Hazard Avoidance Camera", rover)
+        RHAZ: CameraClient = CameraClient("RHAZ", "Rear Hazard Avoidance Camera", rover)
+        MAST: CameraClient = CameraClient("MAST", "Mast Camera", rover)
+        CHEMCAM: CameraClient = CameraClient("CHEMCAM", "Chemistry and Camera Complex", rover)
+        MAHLI: CameraClient = CameraClient("MAHLI", "Mars Hand Lens Imager", rover)
+        MARDI: CameraClient = CameraClient("MARDI", "Mars Descent Imager", rover)
+        NAVCAM: CameraClient = CameraClient("NAVCAM", "Navigation Camera", rover)
+        PANCAM: CameraClient = CameraClient("PANCAM", "Panoramic Camera", rover)
+        MINITES: CameraClient = CameraClient("MINITES", "Miniature Thermal Emission Spectrometer (Mini-TES)", rover)
+
+    return BaseCameras
+
+
+CAMERAS = make_cameras()
+
+from marstuff.objects.rover import CLIENT_ROVERS, Rover
