@@ -46,7 +46,33 @@ class Client:
         photos = self.get(f"rovers/{rover_name}/photos", **params)
         return convert(photos['photos'], List[Photo])
 
+    def get_photos_by_sol(self, rover: Union[Rover, ROVERS, str], sol: int = None, page_number: Optional[int] = 1,
+                          camera: Union[BaseCamera, CAMERAS, str] = None):
+        return self.get_photos(rover, sol, None, page_number, camera)
 
-from marstuff.objects.camera import BaseCamera, Camera, CAMERAS
+    def get_photos_by_earth_date(self, rover: Union[Rover, ROVERS, str], earth_date: str = None,
+                                 page_number: Optional[int] = 1,
+                                 camera: Union[BaseCamera, CAMERAS, str] = None):
+        return self.get_photos(rover, None, earth_date, page_number, camera)
+
+    def get_all_photos(self, rover: Union[Rover, ROVERS, str], sol: int = None, earth_date: str = None,
+                       camera: Union[BaseCamera, CAMERAS, str] = None):
+        return self.get_photos(rover, sol, earth_date, None, camera)
+
+    def get_all_photos_by_sol(self, rover: Union[Rover, ROVERS, str], sol: int = None,
+                              camera: Union[BaseCamera, CAMERAS, str] = None):
+        return self.get_all_photos(rover, sol, None, camera)
+
+    def get_all_photos_by_earth_date(self, rover: Union[Rover, ROVERS, str], earth_date: str = None,
+                                     camera: Union[BaseCamera, CAMERAS, str] = None):
+        return self.get_all_photos(rover, None, earth_date, camera)
+
+    def get_latest_photo(self, rover: Union[Rover, ROVERS, str]):
+        rover_name = get_name(rover, Rover, ROVERS)
+        latest_photo = self.get(f'rovers/{rover_name}/latest_photos')
+        return convert(latest_photo, Photo)
+
+
+from marstuff.objects.camera import BaseCamera, CAMERAS
 from marstuff.objects.photo import Photo
 from marstuff.objects.rover import make_rovers, Rover, ROVERS

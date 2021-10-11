@@ -46,7 +46,7 @@ class ObjectBase:
             return [self.convert_to_raw_json(x) for x in var]
         if isinstance(var, ObjectBase):
             return dict(var)
-        if isinstance(var, datetime) or isinstance(var, date):
+        if isinstance(var, (date, datetime)):
             return var.isoformat()
         return var
 
@@ -58,5 +58,5 @@ class ObjectBase:
         return f'<{self.__class__.__name__} {" ".join(x[0] + "=" + str(x[1]) for x in list(self))}>'
 
 
-class Object(ObjectBase, metaclass=ObjectBaseMeta):
+class Object(ObjectBase, metaclass = ObjectBaseMeta):
     pass

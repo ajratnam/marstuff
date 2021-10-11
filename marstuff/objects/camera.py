@@ -33,6 +33,11 @@ class CameraClient(BaseCamera):
             return random.choice(CLIENT_ROVERS)
         raise ValueError('No Rovers Available!!')
 
+    def add_rover(self, rover):
+        if not isinstance(rover, Rover):
+            raise TypeError(f"Expected Client, got {rover}")
+        return self.__class__(self.name, self.full_name, rover)
+
     def get_photos(self, sol: int = None, earth_date: str = None, page_number: Optional[int] = 1):
         return self.rover.get_photos(sol, earth_date, page_number, self)
 

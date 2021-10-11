@@ -3,6 +3,7 @@ from __future__ import annotations
 import random
 from enum import Enum
 from typing import Optional, Union
+from marstuff.utils import convert
 
 CLIENT_ROVERS = []
 
@@ -58,6 +59,26 @@ class Rover:
                    camera: Union[BaseCamera, CAMERAS, str] = None):
         return self.client.get_photos(self, sol, earth_date, page_number, camera)
 
+    def get_photos_by_sol(self, sol: int = None, page_number: Optional[int] = 1,
+                          camera: Union[BaseCamera, CAMERAS, str] = None):
+        return self.get_photos(sol, None, page_number, camera)
+
+    def get_photos_by_earth_date(self, earth_date: str = None, page_number: Optional[int] = 1,
+                                 camera: Union[BaseCamera, CAMERAS, str] = None):
+        return self.get_photos(None, earth_date, page_number, camera)
+
+    def get_all_photos(self, sol: int = None, earth_date: str = None, camera: Union[BaseCamera, CAMERAS, str] = None):
+        return self.get_photos(sol, earth_date, None, camera)
+
+    def get_all_photos_by_sol(self, sol: int = None, camera: Union[BaseCamera, CAMERAS, str] = None):
+        return self.get_all_photos(sol, None, camera)
+
+    def get_all_photos_by_earth_date(self, earth_date: str = None, camera: Union[BaseCamera, CAMERAS, str] = None):
+        return self.get_all_photos(None, earth_date, camera)
+
+    def get_latest_photo(self):
+        return self.client.get_latest_photo(self)
+
 
 def make_rovers(client=None):
     class BaseRovers(Enum):
@@ -75,3 +96,4 @@ ROVERS = make_rovers()
 
 from marstuff.client import Client, CLIENTS
 from marstuff.objects.camera import BaseCamera, CAMERAS
+from marstuff.objects.photo import Photo
