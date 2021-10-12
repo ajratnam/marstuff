@@ -86,7 +86,7 @@ This is a **Work-In-Progress** Python API Wrapper for NASA's Mars Rover Photos A
     MINITES|Miniature Thermal Emission Spectrometer (Mini-TES)| |✔|✔|
     
   You can query via `sol` or `earth_date`
-  
+  <br>
   `sol` means `Martian rotation or day` which can be (0 to `Current Sol of Rover`)
-  
+  <br>
   `earth_date` is in the format of `YYYY-MM-DD`
