@@ -3,7 +3,6 @@
 <h3 align='center'>API Wrapper for NASA's Mars Rover Photos API</h3>
 <p align="center">
   <a href="https://pypi.python.org/pypi/marstuff/"><img src='https://img.shields.io/badge/MADE%20WITH-Python-red?style=for-the-badge'/></a>
-  <a href="https://pypi.python.org/pypi/marstuff/"><img src='https://img.shields.io/pypi/dm/marstuff.svg?style=for-the-badge'/></a>
   <a href="https://pypi.python.org/pypi/marstuff/"><img src='https://img.shields.io/pypi/pyversions/marstuff?style=for-the-badge'/></a>
   <a href="https://pypi.python.org/pypi/marstuff/"><img src='https://img.shields.io/pypi/status/marstuff?style=for-the-badge'/></a>
   <a href="https://pypi.python.org/pypi/marstuff/"><img src='https://img.shields.io/pypi/l/marstuff?style=for-the-badge'/></a>
@@ -86,7 +85,5 @@ This is a **Work-In-Progress** Python API Wrapper for NASA's Mars Rover Photos A
     MINITES|Miniature Thermal Emission Spectrometer (Mini-TES)| |✔|✔|
     
   You can query via `sol` or `earth_date`
-  <br>
-  `sol` means `Martian rotation or day` which can be (0 to `Current Sol of Rover`)
-  <br>
-  `earth_date` is in the format of `YYYY-MM-DD`
+  - `sol` means `Martian rotation or day` which can be (0 to `Current Sol of Rover`)
+  - `earth_date` is in the format of `YYYY-MM-DD`
