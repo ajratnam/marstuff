@@ -3,7 +3,6 @@ from __future__ import annotations
 import random
 from enum import Enum
 from typing import Optional, Union
-from marstuff.utils import convert
 
 CLIENT_ROVERS = []
 
@@ -51,6 +50,8 @@ class Rover:
 
     @property
     def client(self) -> Client:
+        if self._client:
+            return self._client
         if CLIENTS:
             return random.choice(list(CLIENTS.values()))
         raise ValueError('No Clients Available!!')
@@ -96,4 +97,3 @@ ROVERS = make_rovers()
 
 from marstuff.client import Client, CLIENTS
 from marstuff.objects.camera import BaseCamera, CAMERAS
-from marstuff.objects.photo import Photo

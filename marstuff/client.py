@@ -11,7 +11,7 @@ CLIENTS = {}
 
 
 class Client:
-    def __init__(self, api_key: str, base_url: str = "https://api.nasa.gov/mars-photos/api/v1/"):
+    def __init__(self, api_key: str = "DEMO_KEY", base_url: str = "https://api.nasa.gov/mars-photos/api/v1/"):
         self.api_key = api_key
         self.base_url = base_url
         CLIENTS[api_key] = self
@@ -70,7 +70,7 @@ class Client:
     def get_latest_photo(self, rover: Union[Rover, ROVERS, str]):
         rover_name = get_name(rover, Rover, ROVERS)
         latest_photo = self.get(f'rovers/{rover_name}/latest_photos')
-        return convert(latest_photo, Photo)
+        return convert(latest_photo['latest_photos'][0], Photo)
 
 
 from marstuff.objects.camera import BaseCamera, CAMERAS
