@@ -28,20 +28,28 @@ This is a **Work-In-Progress** Python API Wrapper for NASA's Mars Rover Photos A
   - Copy Your API Key
   ![image](https://user-images.githubusercontent.com/90889682/136915687-fcfdc223-e85e-41f6-bcbb-4781ef1e97bc.png)
 - ### ⚡ Quickstart
-  - Getting the `Latest Photo` of NASA's `Curiosity` Rover
+  - Getting, Viewing and Saving the `Latest Photo` of NASA's `Curiosity` Rover
     ```py
-    from marstuff import Client
-    client = Client("Your API Token")
+    from marstuff import Client # Import the Client class
+    client = Client("Your API Token") # Make a new Client
     
-    print(client.get_latest_photo(client.curiosity))
+    # Get the latest Photo
+    photo = client.get_latest_photo(client.curiosity)
     # OR
-    print(client.curiosity.get_latest_photo())
+    photo = client.curiosity.get_latest_photo()
+    
+    # Display the Photo
+    photo.show()
+    # Save the Photo
+    photo.save("Latest photo of Curiosity.png")
     ```
   - Getting all the photos taken by the `Rear Hazard Avoidance Camera` of NASA's `Curiosity` Rover on sol `3259`
     ```py
-    from marstuff import Client
-    from marstuff.objects.camera import CAMERAS
+    from marstuff import Client # Import the Client class
+    from marstuff.objects.camera import CAMERAS # Import the list of all CAMERAS
+    client = Client("Your API Token") # Make a new Client
     
+    # Get the photo by Curiosity on sol 3259 with the RHAZ camera
     print(client.curiosity.get_all_photos_by_sol(3259, CAMERAS.RHAZ))
     # OR
     print(client.curiosity.rhaz.get_all_photos_by_sol(3259))
