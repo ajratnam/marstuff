@@ -39,7 +39,7 @@ class Photo(Object):
 
     def save(self, path=None):
         if path is None:
-            path = f"NASA_{self.rover.name}_{self.camera.name}_{str(self.earth_date).replace('-', '_')}"
+            path = f"NASA_{self.rover.name}_{self.camera.name}_{str(self.earth_date).replace('-', '_')}.png"
         else:
             name = os.path.dirname(path)
             if name:
