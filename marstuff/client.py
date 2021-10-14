@@ -27,9 +27,8 @@ class Client:
         params['api_key'] = self.api_key
         return httpx.get(self.base_url + endpoint, params = params).json()
 
-    def get_photos(self, rover: Union[Rover, ROVERS, str], sol: int = None, earth_date: str = None,
-                   page_number: Optional[int] = 1, camera: Union[BaseCamera, CAMERAS, str] = None):
-        rover_name = get_name(rover, Rover, ROVERS)
+    @staticmethod
+    def get_params(sol, earth_date, page_number, camera):
         params = {}
         if sol is not None:
             sol = convert(sol, int)
@@ -43,6 +42,12 @@ class Client:
         if camera is not None:
             camera = get_name(camera, BaseCamera, CAMERAS)
             params['camera'] = camera
+        return params
+
+    def get_photos(self, rover: Union[Rover, ROVERS, str], sol: int = None, earth_date: str = None,
+                   page_number: Optional[int] = 1, camera: Union[BaseCamera, CAMERAS, str] = None):
+        rover_name = get_name(rover, Rover, ROVERS)
+        params = self.get_params(sol, earth_date, page_number, camera)
         photos = self.get(f"rovers/{rover_name}/photos", **params)
         return convert(photos['photos'], List[Photo])
 
@@ -70,6 +75,25 @@ class Client:
     def get_latest_photo(self, rover: Union[Rover, ROVERS, str]):
         rover_name = get_name(rover, Rover, ROVERS)
         latest_photo = self.get(f'rovers/{rover_name}/latest_photos')
+        return convert(latest_photo['latest_photos'][0], Photo)
+
+
+class AsyncClient(Client):
+    async def get(self, endpoint, **params):
+        params['api_key'] = self.api_key
+        async with httpx.AsyncClient() as client:
+            return (await client.get(self.base_url + endpoint, params = params)).json()
+
+    async def get_photos(self, rover: Union[Rover, ROVERS, str], sol: int = None, earth_date: str = None,
+                         page_number: Optional[int] = 1, camera: Union[BaseCamera, CAMERAS, str] = None):
+        rover_name = get_name(rover, Rover, ROVERS)
+        params = self.get_params(sol, earth_date, page_number, camera)
+        photos = await self.get(f"rovers/{rover_name}/photos", **params)
+        return convert(photos['photos'], List[Photo])
+
+    async def get_latest_photo(self, rover: Union[Rover, ROVERS, str]):
+        rover_name = get_name(rover, Rover, ROVERS)
+        latest_photo = await self.get(f'rovers/{rover_name}/latest_photos')
         return convert(latest_photo['latest_photos'][0], Photo)
 
 
