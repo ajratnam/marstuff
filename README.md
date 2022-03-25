@@ -29,7 +29,7 @@ which provides both **Synchronous** and **Asynchronous** support.
   - Copy Your API Key
   ![image](https://user-images.githubusercontent.com/90889682/136915687-fcfdc223-e85e-41f6-bcbb-4781ef1e97bc.png)
 - ### ⚡ Quickstart
-  - Asynchronously getting, Viewing and Saving the `Latest Photo` of NASA's `Curiosity` Rover
+  - Synchronously getting, Viewing and Saving the `Latest Photo` of NASA's `Curiosity` Rover
     ```py
     from marstuff import Client # Import the Client class
     client = Client("Your API Token") # Make a new Client
@@ -55,12 +55,12 @@ which provides both **Synchronous** and **Asynchronous** support.
     # Make a function for running asyncio
     async def get_photos():
         # Get the photo by Curiosity on sol 3259 with the RHAZ camera
-        photos = client.curiosity.get_all_photos_by_sol(3259, CAMERAS.RHAZ)
+        photos = await client.curiosity.get_all_photos_by_sol(3259, CAMERAS.RHAZ)
         # OR
-        photos = client.curiosity.rhaz.get_all_photos_by_sol(3259)
+        photos = await client.curiosity.rhaz.get_all_photos_by_sol(3259)
         print(photos)
     
-    asyncio.run(get_photos)
+    asyncio.run(get_photos())
     
 - #### 🧠 General Need-to-Know Stuff!!
   This API currently provides access to 4 NASA Rovers (`Perseverance`, `Curiosity`, `Opportunity`, and `Spirit`)
