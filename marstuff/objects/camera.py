@@ -58,6 +58,9 @@ class CameraClient(BaseCamera):
     def get_all_photos_by_earth_date(self, earth_date: str = None):
         return self.get_all_photos(None, earth_date)
 
+    def __repr__(self):
+        return self.name
+
 
 def make_cameras(rover=None):
     class BaseCameras(Enum):

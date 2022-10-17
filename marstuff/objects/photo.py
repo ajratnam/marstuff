@@ -7,8 +7,8 @@ import httpx
 from PIL import Image
 
 from marstuff.bases import Object
-from marstuff.objects.manifest import Manifest
-from marstuff.utils import convert, Extras
+from marstuff.objects.camera import CAMERAS
+from marstuff.utils import convert, Extras, List
 
 
 class Photo(Object):
@@ -47,4 +47,22 @@ class Photo(Object):
         self.image.save(path)
 
 
+class ManifestPhoto(Object):
+    def __init__(self, id=None, sol=None, earth_date=None, total_photos=None, cameras=None, **extras):
+        self.id = convert(id, int)
+        self.sol = convert(sol, int)
+        self.earth_date = convert(earth_date, date)
+        self.total_photos = convert(total_photos, int)
+
+        for index, camera in enumerate(cameras):
+            if not hasattr(CAMERAS, camera):
+                print(f'Unknown camera: {camera}')
+            else:
+                cameras[index] = getattr(CAMERAS, camera).value
+        self.cameras = cameras
+
+        self.extras: dict = convert(extras, Extras)
+
+
 from marstuff.objects.camera import Camera
+from marstuff.objects.manifest import Manifest

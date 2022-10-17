@@ -4,7 +4,6 @@ from datetime import date
 from typing import Optional, Union
 
 import httpx
-
 from marstuff.utils import convert, get_name, List
 
 CLIENTS = {}
@@ -25,7 +24,7 @@ class Client:
 
     def get(self, endpoint, **params):
         params['api_key'] = self.api_key
-        return httpx.get(self.base_url + endpoint, params = params).json()
+        return httpx.get(self.base_url + endpoint, params=params).json()
 
     @staticmethod
     def get_params(sol, earth_date, page_number, camera):
@@ -77,6 +76,11 @@ class Client:
         latest_photo = self.get(f'rovers/{rover_name}/latest_photos')
         return convert(latest_photo['latest_photos'][0], Photo)
 
+    def get_latest_manifest(self, rover: Union[Rover, ROVERS, str]):
+        rover_name = get_name(rover, Rover, ROVERS)
+        manifest_info = self.get(f'manifests/{rover_name}')
+        return convert(manifest_info['photo_manifest'], Manifest)
+
 
 class AsyncClient(Client):
     async def get(self, endpoint, **params):
@@ -100,3 +104,4 @@ class AsyncClient(Client):
 from marstuff.objects.camera import BaseCamera, CAMERAS
 from marstuff.objects.photo import Photo
 from marstuff.objects.rover import make_rovers, Rover, ROVERS
+from marstuff.objects.manifest import Manifest
