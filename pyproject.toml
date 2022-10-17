@@ -1,9 +1,9 @@
 [tool.poetry]
 name = "marstuff"
-version = "0.1.19"
+version = "0.2.0"
 description = "A Python Wrapper for NASA's Mars Rover Photos API"
-authors = ["Ajay Ratnam <ajayratnam.satheesh@gmail.com>"]
-maintainers = ["Ajay Ratnam <ajayratnam.satheesh@gmail.com>"]
+authors = ["Ajay Ratnam <ajratnam.dev@gmail.com>"]
+maintainers = ["Ajay Ratnam <ajratnam.dev@gmail.com>"]
 license = "MIT"
 keywords = ["nasa", "api", "mars", "rover"]
 homepage = 'https://github.com/ajratnam/marstuff'
