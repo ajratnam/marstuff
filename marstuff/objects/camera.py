@@ -13,6 +13,11 @@ class BaseCamera:
 
 
 class Camera(Object, BaseCamera):
+    def __new__(cls, name, *args, **kwargs):
+        if name in CAMERAS:
+            return CAMERAS[name]
+        return super().__new__(cls)
+
     def __init__(self, id=None, name=None, rover_id=None, full_name=None, **extras):
         self.id = convert(id, int)
         self.name = convert(name, str)
