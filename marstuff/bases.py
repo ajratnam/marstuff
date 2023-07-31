@@ -37,18 +37,18 @@ class ObjectBase:
         return obj
 
     def to_json(self):
-        return json.dumps(dict(self))
+        return dict(self)
 
     def convert_to_raw_json(self, var):
-        if isinstance(var, ObjectBase):
-            return str(var)
         if isinstance(var, list):
             return [self.convert_to_raw_json(x) for x in var]
         if isinstance(var, ObjectBase):
             return dict(var)
         if isinstance(var, (date, datetime)):
             return var.isoformat()
-        return var
+        if isinstance(var, int):
+            return var
+        return str(var)
 
     def __iter__(self):
         for field in list(inspect.signature(self.__init__).parameters)[:-1]:
