@@ -4,6 +4,8 @@ from datetime import date
 from typing import Optional, Union
 
 import httpx
+
+from marstuff.errors import InvalidAPIKeyError
 from marstuff.utils import convert, get_name, List
 
 CLIENTS = {}
@@ -24,7 +26,11 @@ class Client:
 
     def get(self, endpoint, **params):
         params['api_key'] = self.api_key
-        return httpx.get(self.base_url + endpoint, params=params).json()
+        response = httpx.get(self.base_url + endpoint, params=params).json()
+        if response.get("error"):
+            error = response["error"]
+            raise InvalidAPIKeyError(error["message"])
+        return response
 
     @staticmethod
     def get_params(sol, earth_date, page_number, camera):
