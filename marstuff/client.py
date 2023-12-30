@@ -92,7 +92,11 @@ class AsyncClient(Client):
     async def get(self, endpoint, **params):
         params['api_key'] = self.api_key
         async with httpx.AsyncClient() as client:
-            return (await client.get(self.base_url + endpoint, params = params)).json()
+            response = (await client.get(self.base_url + endpoint, params = params)).json()
+        if response.get("error"):
+            error = response["error"]
+            raise InvalidAPIKeyError(error["message"])
+        return response
 
     async def get_photos(self, rover: Union[Rover, ROVERS, str], sol: int = None, earth_date: str = None,
                          page_number: Optional[int] = 1, camera: Union[BaseCamera, CAMERAS, str] = None):
